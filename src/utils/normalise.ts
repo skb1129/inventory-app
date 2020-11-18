@@ -1,3 +1,12 @@
-export function normalise<T extends Record<string, S>, S>(data: T): S[] {
-  return Object.keys(data).map(id => ({ ...data[id], id }));
+import { comparator } from "./comparator";
+
+export function normalise<T extends Record<string, S>, S extends Record<string, never>>(
+  data: T,
+  sortKey?: string
+): S[] {
+  const result: S[] = Object.keys(data).map((id) => ({ ...data[id], id }));
+  if (sortKey) {
+    result.sort(comparator<S>(sortKey));
+  }
+  return result;
 }

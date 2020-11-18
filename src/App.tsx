@@ -45,7 +45,7 @@ function App(): JSX.Element {
 
   return (
     <div data-testid="app" className={classes.wrapper}>
-      <Table headers={normalise<DocHeaders, Header>(headers)} items={normalise<DocItems, Item>(items)} />
+      <Table headers={normalise<DocHeaders, Header>(headers, "order")} items={normalise<DocItems, Item>(items)} />
     </div>
   );
 }
