@@ -1,28 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
+import { db } from "./api";
 import Table from "./components/table/Table";
-import { Header, Item } from "./components/table/models";
-
+import { DocHeaders, DocItems, Header, Item } from "./components/table/models";
+import { normalise } from "./utils";
 import classes from "./App.scss";
 
-const mockData = {
-  headers: [
-    { id: "name", text: "Name", size: "auto" },
-    { id: "price", text: "Price (₹)", size: "md" },
-    { id: "quantity", text: "Quantity (NOS)", size: "md" },
-  ] as Header[],
-  items: [
-    { id: "1", name: "Chips", price: 20, quantity: 100 },
-    { id: "2", name: "Chocolates", price: 100, quantity: 50 },
-    { id: "3", name: "Dettol", price: 10, quantity: 1000 },
-    { id: "4", name: "Maggi", price: 80, quantity: 10 },
-  ] as Item[],
-};
-
 function App(): JSX.Element {
+  const [headers, setHeaders] = useState<DocHeaders>({});
+  const [items, setItems] = useState<DocItems>({});
+
+  useEffect(() => {
+    const fetchHeaders = async () => {
+      const refHeaders = db.collection("inventory").doc("headers");
+      try {
+        const docHeaders = await refHeaders.get();
+        if (docHeaders.exists) {
+          setHeaders(docHeaders.data() || {});
+          console.log("Document data:", docHeaders.data());
+        } else {
+          console.log("No such document!");
+        }
+      } catch (e) {
+        console.log("Error getting document:", e);
+      }
+    };
+    const fetchItems = async () => {
+      const refItems = db.collection("inventory").doc("items");
+      try {
+        const docItems = await refItems.get();
+        if (docItems.exists) {
+          setItems(docItems.data() || {});
+          console.log("Document data:", docItems.data());
+        } else {
+          console.log("No such document!");
+        }
+      } catch (e) {
+        console.log("Error getting document:", e);
+      }
+    };
+    fetchHeaders();
+    fetchItems();
+  }, []);
+
   return (
     <div data-testid="app" className={classes.wrapper}>
-      <Table headers={mockData.headers} items={mockData.items} />
+      <Table headers={normalise<DocHeaders, Header>(headers)} items={normalise<DocItems, Item>(items)} />
     </div>
   );
 }

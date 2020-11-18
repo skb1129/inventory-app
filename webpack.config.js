@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const DotEnv = require("dotenv-webpack");
 
 const environments = require("./environments");
 
@@ -106,6 +107,7 @@ module.exports = (env, options) => {
         filename: "css/[name].css",
         chunkFilename: "css/[id].css",
       }),
+      new DotEnv(),
     ],
   };
 };
