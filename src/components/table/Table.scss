@@ -1,0 +1,36 @@
+@import "src/styles/colors";
+
+.wrapper {
+  font-size: 1.6rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px 0 rgba(50, 50, 50, 0.75);
+  background: #ffffff;
+}
+.row {
+  border-top: 1px solid $border;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+}
+.header {
+  font-weight: 500;
+  border: none;
+}
+.column {
+  text-align: right;
+  &:first-child {
+    text-align: left;
+  }
+  &-sm {
+    flex: 0 0 10rem;
+  }
+  &-md {
+    flex: 0 0 20rem;
+  }
+  &-lg {
+    flex: 0 0 30rem;
+  }
+  &-auto {
+    flex: 1 1 auto;
+  }
+}

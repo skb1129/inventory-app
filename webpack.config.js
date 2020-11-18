@@ -60,7 +60,7 @@ module.exports = (env, options) => {
                 importLoaders: 1,
                 modules: {
                   localIdentName: "[name]__[local]__[hash:base64:5]",
-                  exportLocalsConvention: "camelCaseOnly",
+                  exportLocalsConvention: "camelCase",
                 },
               },
             },

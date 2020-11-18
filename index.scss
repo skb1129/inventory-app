@@ -1,4 +1,4 @@
-@import "./src/styles/colors";
+@import "src/styles/colors";
 
 html {
   font-size: 10px;
@@ -6,6 +6,8 @@ html {
   font-weight: 400;
   color: $textPrimary;
   outline: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: auto;
 }
 
 body {
