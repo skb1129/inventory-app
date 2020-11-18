@@ -1,0 +1,36 @@
+@import "./styles/colors";
+
+.wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  padding: 2rem;
+}
+.header {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.logo {
+  height: 10rem;
+  margin: 2rem;
+  animation: logo-spin infinite 5s linear;
+}
+.text {
+  font-size: 2rem;
+  color: $textPrimary;
+}
+.link {
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
