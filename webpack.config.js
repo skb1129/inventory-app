@@ -5,8 +5,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
 
-const environments = require("./environments");
-
 const MODE = {
   DEV: "development",
   PROD: "production",
@@ -14,7 +12,6 @@ const MODE = {
 
 module.exports = (env, options) => {
   const { mode = MODE.DEV } = options;
-  const { server = "local" } = env;
   return {
     mode,
     devServer: {
@@ -22,7 +19,6 @@ module.exports = (env, options) => {
       host: "0.0.0.0",
       port: "3000",
       proxy: {
-        "/api": { target: environments[server], secure: false },
         "**": {
           bypass(req) {
             if (req.headers.accept.includes("html")) {
@@ -33,7 +29,7 @@ module.exports = (env, options) => {
       },
       hot: true,
       overlay: true,
-      https: server !== "local",
+      https: false,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
