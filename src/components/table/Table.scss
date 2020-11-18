@@ -10,13 +10,13 @@
   border-top: 1px solid $border;
   display: flex;
   align-items: center;
-  padding: 1.5rem;
 }
 .header {
   font-weight: 500;
   border: none;
 }
 .column {
+  padding: 1.5rem;
   text-align: right;
   &:first-child {
     text-align: left;
@@ -32,5 +32,17 @@
   }
   &-auto {
     flex: 1 1 auto;
+  }
+  &-actions {
+    padding: 0 1.5rem;
+  }
+}
+
+.icon {
+  height: 3rem;
+  width: 3rem;
+  cursor: pointer;
+  &:first-child {
+    margin-right: 1rem;
   }
 }

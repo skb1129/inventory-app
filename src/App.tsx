@@ -17,7 +17,6 @@ function App(): JSX.Element {
         const docHeaders = await refHeaders.get();
         if (docHeaders.exists) {
           setHeaders(docHeaders.data() || {});
-          console.log("Document data:", docHeaders.data());
         } else {
           console.log("No such document!");
         }
@@ -31,7 +30,6 @@ function App(): JSX.Element {
         const docItems = await refItems.get();
         if (docItems.exists) {
           setItems(docItems.data() || {});
-          console.log("Document data:", docItems.data());
         } else {
           console.log("No such document!");
         }

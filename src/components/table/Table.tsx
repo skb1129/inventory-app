@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { Header, Item } from "./models";
 
 import classes from "./Table.scss";
+import { icons } from '../../assets'
 
 type Props = {
   headers: Header[];
@@ -18,6 +19,7 @@ function Table({ headers, items }: Props): JSX.Element {
             {header.text}
           </span>
         ))}
+        <span className={classNames(classes.column, classes.columnSm)}>Actions</span>
       </div>
       <div>
         {items.map((item) => (
@@ -30,6 +32,10 @@ function Table({ headers, items }: Props): JSX.Element {
                 {item[header.id]}
               </span>
             ))}
+            <div className={classNames(classes.column, classes.columnSm, classes.columnActions)}>
+              {icons.edit({ className: classes.icon })}
+              {icons.bin({ className: classes.icon })}
+            </div>
           </div>
         ))}
       </div>
