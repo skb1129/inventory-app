@@ -1,0 +1,17 @@
+@import "src/styles/colors";
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  width: calc(100% - 4rem);
+  height: 6rem;
+  background: #1976d2;
+  color: $highlight;
+  font-weight: 500;
+}
+
+.title {
+  font-size: 2rem;
+}

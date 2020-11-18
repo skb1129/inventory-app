@@ -1,16 +1,17 @@
 import React from "react";
 import classNames from "classnames";
 
+import { icons } from "../../assets";
+import { useAuth } from "../../contexts/AuthContext";
 import { Header, Item } from "./models";
-
 import classes from "./Table.scss";
-import { icons } from '../../assets'
 
 type Props = {
   headers: Header[];
   items: Item[];
 };
 function Table({ headers, items }: Props): JSX.Element {
+  const { isAdminUser } = useAuth();
   return (
     <div className={classes.wrapper}>
       <div className={classNames(classes.row, classes.header)}>
@@ -19,7 +20,7 @@ function Table({ headers, items }: Props): JSX.Element {
             {header.text}
           </span>
         ))}
-        <span className={classNames(classes.column, classes.columnSm)}>Actions</span>
+        {isAdminUser ? <span className={classNames(classes.column, classes.columnSm)}>Actions</span> : null}
       </div>
       <div>
         {items.map((item) => (
@@ -32,10 +33,12 @@ function Table({ headers, items }: Props): JSX.Element {
                 {item[header.id]}
               </span>
             ))}
-            <div className={classNames(classes.column, classes.columnSm, classes.columnActions)}>
-              {icons.edit({ className: classes.icon })}
-              {icons.bin({ className: classes.icon })}
-            </div>
+            {isAdminUser ? (
+              <div className={classNames(classes.column, classes.columnSm, classes.columnActions)}>
+                {icons.edit({ className: classes.icon })}
+                {icons.bin({ className: classes.icon })}
+              </div>
+            ) : null}
           </div>
         ))}
       </div>

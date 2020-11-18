@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import { db } from "./api";
+import Navbar from "./components/navbar/Navbar";
 import Table from "./components/table/Table";
 import { DocHeaders, DocItems, Header, Item } from "./components/table/models";
+import { AuthProvider } from './contexts/AuthContext'
 import { normalise } from "./utils";
 import classes from "./App.scss";
 
@@ -42,9 +44,12 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <div data-testid="app" className={classes.wrapper}>
-      <Table headers={normalise<DocHeaders, Header>(headers, "order")} items={normalise<DocItems, Item>(items)} />
-    </div>
+    <AuthProvider>
+      <Navbar />
+      <div data-testid="app" className={classes.wrapper}>
+        <Table headers={normalise<DocHeaders, Header>(headers, "order")} items={normalise<DocItems, Item>(items)} />
+      </div>
+    </AuthProvider>
   );
 }
 
