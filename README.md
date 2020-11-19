@@ -1,5 +1,5 @@
-# React Boilerplate
-A minimal boilerplate to start developing web apps using React.
+# Inventory App
+An inventory management and display application build using Firebase and React.
 
 ## Getting Started
 These instructions will help you run a copy of this project on your system.
@@ -37,6 +37,7 @@ yarn build
 
 ## Build With
 * [React](https://reactjs.org/) - The frontend library used
+* [Firebase](https://firebase.google.com/) - Backend service provider
 * [Webpack](https://webpack.js.org/) - Asset bundling tool
 
 ## Authors
