@@ -47,7 +47,6 @@ function AuthProvider({ children }: Props): JSX.Element {
   const signOut = useCallback(async () => {
     try {
       await firebase.auth().signOut();
-      setUser(null);
     } catch (e) {
       console.log(e);
     }

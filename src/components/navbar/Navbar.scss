@@ -15,3 +15,22 @@
 .title {
   font-size: 2rem;
 }
+
+.name {
+  font-size: 1.4rem;
+  margin-right: 1rem;
+}
+
+.button {
+  border: none;
+  border-radius: 0;
+  padding: 1rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  background: none;
+  color: $highlight;
+  font-weight: 600;
+  &:hover {
+    background: #145199;
+  }
+}

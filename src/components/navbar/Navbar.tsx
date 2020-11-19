@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from "../../contexts/AuthContext";
 import classes from "./Navbar.scss";
 
 function Navbar(): JSX.Element {
@@ -8,7 +8,12 @@ function Navbar(): JSX.Element {
   return (
     <div className={classes.wrapper}>
       <span className={classes.title}>Inventory App</span>
-      <button onClick={user ? signOut : signIn}>{user ? "Sign Out" : "Sign In"}</button>
+      <div>
+        {user ? <span className={classes.name}>{user.displayName}</span> : null}
+        <button className={classes.button} onClick={user ? signOut : signIn}>
+          {user ? "SIGN OUT" : "SIGN IN"}
+        </button>
+      </div>
     </div>
   );
 }
