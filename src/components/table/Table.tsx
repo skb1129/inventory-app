@@ -10,10 +10,12 @@ type Props = {
   items: Item[];
   showActions?: boolean;
   onRemove?: (id: string) => Promise<void>;
+  onEdit?: (item: Item) => void;
 };
-function Table({ headers, items, showActions, onRemove }: Props): JSX.Element {
+function Table({ headers, items, showActions, onRemove, onEdit }: Props): JSX.Element {
   const renderItem = (item: Item) => {
     const deleteItem = () => onRemove && onRemove(item.id);
+    const editItem = () => onEdit && onEdit(item);
     return (
       <div key={item.id} className={classes.row}>
         {headers.map((header) => (
@@ -26,7 +28,7 @@ function Table({ headers, items, showActions, onRemove }: Props): JSX.Element {
         ))}
         {showActions ? (
           <div className={classNames(classes.column, classes.columnSm, classes.columnActions)}>
-            {icons.edit({ className: classes.icon })}
+            {icons.edit({ className: classes.icon, onClick: editItem })}
             {icons.bin({ className: classes.icon, onClick: deleteItem })}
           </div>
         ) : null}

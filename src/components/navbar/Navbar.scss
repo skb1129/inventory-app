@@ -1,13 +1,14 @@
 @import "src/styles/colors";
 
 .wrapper {
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
   width: calc(100% - 4rem);
   height: 6rem;
-  background: #1976d2;
+  background: $theme;
   color: $highlight;
   font-weight: 500;
 }
@@ -31,6 +32,6 @@
   color: $highlight;
   font-weight: 600;
   &:hover {
-    background: #145199;
+    background: $themeDark;
   }
 }

@@ -1,5 +1,36 @@
 @import "src/styles/colors";
 
 .wrapper {
-  padding: 2rem;
+  padding: 8rem 2rem 2rem 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.input {
+  font-size: 1.4rem;
+  flex: 0 1 30rem;
+  padding: 1rem;
+  border: none;
+  border-bottom: 1px solid $theme;
+  background: transparent;
+}
+
+.button {
+  border: none;
+  border-radius: 2px;
+  padding: 1rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  background: $theme;
+  box-shadow: 0 2px 3px 0 rgba(50, 50, 50, 0.75);
+  color: $highlight;
+  font-weight: 500;
+  &:hover {
+    background: $themeDark;
+  }
 }

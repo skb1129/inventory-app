@@ -1,0 +1,67 @@
+@import "src/styles/colors";
+
+.modal {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.wrapper {
+  flex: 0 1 50rem;
+  background: $highlight;
+  padding: 2rem;
+  margin: 2rem;
+  border-radius: 1rem;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+.label {
+  flex: 0 1 10rem;
+}
+
+.input {
+  font-size: 1.4rem;
+  flex: 1 1 36rem;
+  margin-left: 2rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-bottom: 1px solid $theme;
+}
+
+.button {
+  float: right;
+  border: none;
+  border-radius: 2px;
+  padding: 1rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  background: $theme;
+  box-shadow: 0 2px 3px 0 rgba(50, 50, 50, 0.75);
+  color: $highlight;
+  font-weight: 500;
+  margin-top: 1rem;
+  &:hover {
+    background: $themeDark;
+  }
+  &-disabled {
+    background: $border;
+    cursor: auto;
+    &:hover {
+      background: $border;
+    }
+  }
+}

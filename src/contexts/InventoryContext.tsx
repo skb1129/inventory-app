@@ -3,17 +3,24 @@ import { v4 as uuidV4 } from "uuid";
 
 import { db, firebase } from "../api";
 import { DocHeaders, DocItems, Item } from "../components/table/models";
+import Form from "../components/form/Form";
+import { normalise } from "../utils";
 
 type InventoryType = {
   headers: DocHeaders;
   items: DocItems;
-  addItem?: (item: Item) => Promise<void>;
+  renderAddItem?: () => void;
+  renderEditItem?: (item: Item) => void;
   removeItem?: (id: string) => Promise<void>;
-  updateItems?: (items: DocItems) => Promise<void>;
 };
 const InventoryContext = React.createContext<InventoryType>({ headers: {}, items: {} });
 
 const useInventory = (): InventoryType => useContext(InventoryContext);
+
+type FormModal = {
+  visible: boolean;
+  item?: Item;
+};
 
 type Props = {
   children: any;
@@ -21,6 +28,7 @@ type Props = {
 function InventoryProvider({ children }: Props): JSX.Element {
   const [headers, setHeaders] = useState<DocHeaders>({});
   const [items, setItems] = useState<DocItems>({});
+  const [modal, setModal] = useState<FormModal>({ visible: false });
 
   const refItems = useMemo(() => db.collection("inventory").doc("items"), []);
 
@@ -48,17 +56,19 @@ function InventoryProvider({ children }: Props): JSX.Element {
     fetchItems();
   }, []);
 
-  const addItem = useCallback(
+  const writeItem = useCallback(
     async (item: Item) => {
       try {
-        const docItems: DocItems = { [uuidV4()]: item };
-        await refItems.set(docItems);
-        setItems((prevItems) => ({ ...prevItems, ...docItems }));
+        const { id = uuidV4() } = item;
+        delete item.id;
+        await refItems.update({ [id]: item });
+        setItems((prevItems) => ({ ...prevItems, [id]: item }));
+        setModal({ visible: false });
       } catch (e) {
         console.log(e);
       }
     },
-    [refItems, setItems]
+    [refItems, setItems, setModal]
   );
 
   const removeItem = useCallback(
@@ -77,21 +87,16 @@ function InventoryProvider({ children }: Props): JSX.Element {
     [refItems, setItems]
   );
 
-  const updateItems = useCallback(
-    async (items: DocItems) => {
-      try {
-        await refItems.update(items);
-        setItems((prevItems) => ({ ...prevItems, ...items }));
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    [refItems, setItems]
-  );
+  const renderAddItem = useCallback(() => setModal({ visible: true }), [setModal]);
+
+  const renderEditItem = useCallback((item: Item) => setModal({ visible: true, item }), [setModal]);
 
   return (
-    <InventoryContext.Provider value={{ headers, items, addItem, removeItem, updateItems }}>
+    <InventoryContext.Provider value={{ headers, items, renderAddItem, renderEditItem, removeItem }}>
       {children}
+      {modal.visible ? (
+        <Form headers={normalise(headers, "order")} item={modal.item} onSubmit={writeItem} />
+      ) : null}
     </InventoryContext.Provider>
   );
 }
