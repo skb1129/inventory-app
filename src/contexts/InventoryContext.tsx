@@ -87,6 +87,8 @@ function InventoryProvider({ children }: Props): JSX.Element {
     [refItems, setItems]
   );
 
+  const closeModal = useCallback(() => setModal({ visible: false }), [setModal]);
+
   const renderAddItem = useCallback(() => setModal({ visible: true }), [setModal]);
 
   const renderEditItem = useCallback((item: Item) => setModal({ visible: true, item }), [setModal]);
@@ -95,7 +97,7 @@ function InventoryProvider({ children }: Props): JSX.Element {
     <InventoryContext.Provider value={{ headers, items, renderAddItem, renderEditItem, removeItem }}>
       {children}
       {modal.visible ? (
-        <Form headers={normalise(headers, "order")} item={modal.item} onSubmit={writeItem} />
+        <Form headers={normalise(headers, "order")} item={modal.item} onSubmit={writeItem} closeModal={closeModal} />
       ) : null}
     </InventoryContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 
 import { Item, Header } from "../table/models";
@@ -8,9 +8,18 @@ type Props = {
   headers: Header[];
   item?: Item;
   onSubmit: (form: Item) => void;
+  closeModal: () => void;
 };
-function Form({ headers, item = {}, onSubmit }: Props): JSX.Element {
+function Form({ headers, item = {}, onSubmit, closeModal }: Props): JSX.Element {
   const [form, setForm] = useState<Item>(item);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dialogRef.current && event.target instanceof Node && !dialogRef.current.contains(event.target)) closeModal();
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dialogRef]);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevForm) => ({ ...prevForm, [event.target.name]: event.target.value.replace(/\s\s+/g, " ") }));
   };
@@ -20,7 +29,7 @@ function Form({ headers, item = {}, onSubmit }: Props): JSX.Element {
   }, [headers, form]);
   return (
     <div className={classes.modal}>
-      <div className={classes.wrapper}>
+      <div ref={dialogRef} className={classes.wrapper}>
         {headers.map((header) => (
           <div key={header.id} className={classes.inputWrapper}>
             <label className={classes.label}>{header.text}</label>
