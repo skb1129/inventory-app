@@ -10,10 +10,21 @@ const config = {
   appId: process.env.appId,
 };
 
-firebase.initializeApp(config);
+let db: firebase.firestore.Firestore;
+let googleAuth: firebase.auth.GoogleAuthProvider;
 
-const db = firebase.firestore();
+function connect(): void {
+  firebase.initializeApp(config);
+  db = firebase.firestore();
+  googleAuth = new firebase.auth.GoogleAuthProvider();
+}
 
-const googleAuth = new firebase.auth.GoogleAuthProvider();
+function disconnect(): void {
+  firebase
+    .app()
+    .delete()
+    .then(() => console.log("Firebase app deleted successfully."))
+    .catch((error) => console.log("Error delete Firebase app", error));
+}
 
-export { firebase, db, googleAuth };
+export { firebase, db, googleAuth, connect, disconnect };
