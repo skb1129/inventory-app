@@ -17,23 +17,22 @@ type Props = {
 };
 function AuthProvider({ children }: Props): JSX.Element {
   const [user, setUser] = useState<firebase.User | null>(null);
-  const [admins, setAdmins] = useState<string[]>([]);
+  const [users, setUsers] = useState<firebase.firestore.DocumentData>({});
   useEffect(() => {
     firebase.auth().onAuthStateChanged(setUser);
-    const fetchMetaData = async () => {
-      const refMetaData = db.collection("inventory").doc("meta_data");
+    const fetchUsers = async () => {
+      const refUsers = db.collection("users");
       try {
-        const docMetaData = await refMetaData.get();
-        if (docMetaData.exists) {
-          setAdmins(docMetaData.data()?.admins);
-        } else {
-          console.log("No such document!");
-        }
+        const snapshot = await refUsers.get();
+        if (snapshot.empty) console.log("No such document!");
+        const data: firebase.firestore.DocumentData = {};
+        snapshot.forEach((doc) => (data[doc.id] = doc.data()));
+        setUsers(data);
       } catch (e) {
         console.log("Error getting document:", e);
       }
     };
-    fetchMetaData();
+    fetchUsers();
   }, []);
   const signIn = useCallback(async () => {
     try {
@@ -51,10 +50,7 @@ function AuthProvider({ children }: Props): JSX.Element {
       console.log(e);
     }
   }, []);
-  const isAdminUser = useMemo(() => {
-    if (!user || !admins?.length) return false;
-    return admins.includes(user.uid);
-  }, [user, admins]);
+  const isAdminUser = user && users[user.uid]?.admin;
   return <AuthContext.Provider value={{ user, signIn, signOut, isAdminUser }}>{children}</AuthContext.Provider>;
 }
 

@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { v4 as uuidV4 } from "uuid";
 
-import { db, firebase } from "../api";
-import { DocHeaders, DocItems, Item } from "../components/table/models";
+import { db } from "../api";
+import { DocHeaders, Header, DocItems, Item } from "../components/table/models";
 import Form from "../components/form/Form";
 import { normalise } from "../utils";
 
@@ -30,24 +30,28 @@ function InventoryProvider({ children }: Props): JSX.Element {
   const [items, setItems] = useState<DocItems>({});
   const [modal, setModal] = useState<FormModal>({ visible: false });
 
-  const refItems = useMemo(() => db.collection("inventory").doc("items"), []);
+  const refItems = db.collection("items");
 
   useEffect(() => {
     const fetchHeaders = async () => {
-      const refHeaders = db.collection("inventory").doc("headers");
+      const refHeaders = db.collection("headers");
       try {
-        const docHeaders = await refHeaders.get();
-        if (docHeaders.exists) setHeaders(docHeaders.data() || {});
-        else console.log("No such document!");
+        const snapshot = await refHeaders.get();
+        if (snapshot.empty) console.log("No such document!");
+        const data: DocHeaders = {};
+        snapshot.forEach((doc) => (data[doc.id] = doc.data() as Header));
+        setHeaders(data);
       } catch (e) {
         console.log("Error getting document:", e);
       }
     };
     const fetchItems = async () => {
       try {
-        const docItems = await refItems.get();
-        if (docItems.exists) setItems(docItems.data() || {});
-        else console.log("No such document!");
+        const snapshot = await refItems.get();
+        if (snapshot.empty) console.log("No such document!");
+        const data: DocItems = {};
+        snapshot.forEach((doc) => (data[doc.id] = doc.data() as Item));
+        setItems(data);
       } catch (e) {
         console.log("Error getting document:", e);
       }
@@ -61,7 +65,7 @@ function InventoryProvider({ children }: Props): JSX.Element {
       try {
         const { id = uuidV4() } = item;
         delete item.id;
-        await refItems.update({ [id]: item });
+        await refItems.doc(id).set(item);
         setItems((prevItems) => ({ ...prevItems, [id]: item }));
         setModal({ visible: false });
       } catch (e) {
@@ -74,7 +78,7 @@ function InventoryProvider({ children }: Props): JSX.Element {
   const removeItem = useCallback(
     async (id: string) => {
       try {
-        await refItems.update({ [id]: firebase.firestore.FieldValue.delete() });
+        await refItems.doc(id).delete();
         setItems((prevItems) => {
           const newItems = { ...prevItems };
           delete newItems[id];
