@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "react-test-46148"
+    "default": "<your_firebase_project_id>"
   }
 }

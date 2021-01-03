@@ -2,7 +2,6 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
 
 const MODE = {
@@ -98,7 +97,6 @@ module.exports = (env, options) => {
         xhtml: true,
         inject: true,
       }),
-      new CopyPlugin({ patterns: [{ from: "*.png", context: "public" }] }),
       new MiniCssExtractPlugin({
         filename: "css/[name].css",
         chunkFilename: "css/[id].css",

@@ -8,6 +8,13 @@ These instructions will help you run a copy of this project on your system.
 You need the following application installed on your system to run this project.
 - node ~12.18.1
 - yarn ~1.22.0
+- firebase-tools ~9.1.0
+
+### Firebase
+1. Create a project on the Firebase console.
+2. Enter the project ID in the `.firebaserc` file.
+3. Enable Google sign-in in "Firebase console" > "Authentication" > "Sign-in method".
+4. Create 3 collections in Cloud Firestore called `headers`, `items` and `users`.
 
 ### Installation
 You can install the node dependencies required by the application with the following command:
@@ -34,6 +41,14 @@ Run the following command to bundle the application using webpack in production 
 ```shell script
 yarn build
 ```
+
+## Deployment
+The project uses Firebase Firestore and Hosting services which can be deployed using this command:
+```shell script
+yarn build
+firebase deploy
+```
+It will deploy the `firestore.rules` and `firestore.indexes.json` and also deploy the `build` directory on the hosting service.
 
 ## Build With
 * [React](https://reactjs.org/) - The frontend library used
